@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {useSession} from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,7 +9,6 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import {Button} from '@/components/ui/button';
@@ -18,6 +17,7 @@ import {ChevronDown} from 'lucide-react';
 interface UserAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
     showUserName: boolean
     showMail: boolean
+    showChevron?: boolean
 }
 
 const getInitials = (fullName: string): string => {
@@ -34,9 +34,8 @@ const getInitials = (fullName: string): string => {
         .toUpperCase();                   // Convertit en majuscules
 };
 
-const UserAvatar = ({className, showUserName, showMail}: UserAvatarProps) => {
+const UserAvatar = ({className, showUserName, showMail, showChevron}: UserAvatarProps) => {
     const {data: session} = useSession();
-    console.log(session)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -48,12 +47,14 @@ const UserAvatar = ({className, showUserName, showMail}: UserAvatarProps) => {
                         <AvatarFallback>{getInitials(session!.user.name as string)}</AvatarFallback>
                     </Avatar>
                     {(showUserName || showMail) && session &&
-                        <div className="flex-col justify-start items-start gap-0 inline-flex">
+                        <div className="grid flex-1 text-left  leading-tight">
                             {showUserName && <span className="text-gray-900 text-xs font-semibold ">{session.user.name}</span>}
-                            {showMail && <span className="text-xs text-muted-foreground">{session.user.email}</span>}
+                            {showMail && <span className="text-xs text-muted-foreground text-ellipsis overflow-hidden ">{session.user.email}</span>}
                         </div>
                     }
-                    <ChevronDown className='h-4 w-4 '/>
+                    {(showChevron &&
+                        <ChevronDown className='h-4 w-4 '/>
+                    )}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -69,22 +70,18 @@ const UserAvatar = ({className, showUserName, showMail}: UserAvatarProps) => {
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         Profile
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         Billing
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         Settings
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut({callbackUrl: '/', redirect: true})}>
                     Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

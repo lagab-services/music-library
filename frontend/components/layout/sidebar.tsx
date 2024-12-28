@@ -75,11 +75,12 @@ const Sidebar = ({
                         links={sidelinks}
                     />
                     <div>
-                        <div className="grid gap-1 my-2">
+                        <div className="grid gap-1 p-2">
                             {!isCollapsed ?
-                                <UserAvatar className="justify-start space-x-1 gap-2.5 flex px-5 py-2" showUserName={true} showMail={true}/>
+                                <UserAvatar className="justify-start space-x-1 gap-2.5 flex px-5 py-2" showUserName={true} showMail={true}
+                                            showChevron={true}/>
                                 :
-                                <UserAvatar className="inline-flex items-center justify-center h-14 w-14" showUserName={false} showMail={false}/>
+                                <UserAvatar className="inline-flex items-center justify-center p-0" showUserName={false} showMail={false}/>
                             }
                         </div>
                         {/* Scrollbar width toggle button */}
