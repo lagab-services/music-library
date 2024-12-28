@@ -58,9 +58,9 @@ export const authOptions: NextAuthOptions = {
                         }),
                     })
                     const data = await res.json()
-                    user.token = {token: data.token.token};
-
                     if (res.ok) {
+                        user.name = data.user.fullName
+                        user.token = {token: data.token.token}
                         return true
                     } else {
                         console.error('Error registering user in the backend:', data)
@@ -73,28 +73,22 @@ export const authOptions: NextAuthOptions = {
             }
             return true;
         },
-        // Callback JWT pour manipuler le token
+        // Callback JWT to manipulate token
         async jwt({token, user}) {
-            // Si l'utilisateur est authentifié, stockez des infos supplémentaires dans le JWT
-
             if (user) {
                 token.id = user.id;
-                token.name = user.fullName; // Utilisez fullName comme nom
+                token.name = user.fullName || user.name; // Handle name variations
                 token.email = user.email;
-                token.accessToken = user.token.token; // Stockez le token d'accès ici
+                token.accessToken = user.token?.token; // Save access token
             }
-
-
             return token;
         },
-        async session({session, user, token}) {
-            // Inclure le token JWT du backend dans la session
-
+        async session({session, token}) {
             if (session.user) {
                 session.user.id = token.id;
-                session.user.name = token.name; // Ajoutez le nom complet
+                session.user.name = token.name;
                 session.user.email = token.email;
-                session.user.accessToken = token.accessToken; // Ajoutez le token d'accès à la session
+                session.user.accessToken = token.accessToken; // Include backend access token
             }
             return session
         }
