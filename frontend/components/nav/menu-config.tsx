@@ -1,5 +1,5 @@
 import {SideLink} from '@/types/nav';
-import {AudioLines, BarChart3, Calendar, ClipboardList, LayoutDashboard, LayoutGrid, Play, ReceiptText, Tags, Waypoints} from 'lucide-react';
+import {AudioLines, BarChart3, LayoutDashboard, LibraryBig, Play, Tags} from 'lucide-react';
 import React from 'react';
 
 export const sidelinks: SideLink[] = [
@@ -12,7 +12,7 @@ export const sidelinks: SideLink[] = [
     {
         title: 'Music Livrary',
         href: '/folders',
-        icon: <Play size={18}/>,
+        icon: <LibraryBig size={18}/>,
     },
     {
         title: 'Tags',
@@ -28,22 +28,22 @@ export const sidelinks: SideLink[] = [
             {
                 title: 'Toutes les playlist',
                 label: '',
-                href: '/invoice/quotes',
+                href: '/playlist/',
             },
             {
                 title: 'Spotify',
                 label: '',
-                href: '/invoice/invoices',
+                href: '/playlist/spotify',
             },
             {
                 title: 'Deezer',
                 label: '',
-                href: '/invoice/customers',
+                href: '/playlist/deezer',
             },
             {
                 title: 'Soundcloud',
                 label: '',
-                href: '/invoice/customers',
+                href: '/playlist/soundcloud',
             },
         ],
     },
@@ -51,7 +51,7 @@ export const sidelinks: SideLink[] = [
         title: 'Apps',
         label: '',
         href: '/apps',
-        icon: <LayoutGrid size={18}/>,
+        icon: <Play size={18}/>,
     },
     {
         title: 'Analysis',
