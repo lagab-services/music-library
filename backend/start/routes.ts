@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import {middleware} from "#start/kernel";
 import AuthController from '#controllers/auth/auth_controller';
+import PlaylistsController from "#controllers/playlists_controller";
 
 router.group(() => {
   router.group(() => {
@@ -28,4 +29,8 @@ router.group(() => {
       return response.unauthorized({error: 'User not found'})
     }
   }).use(middleware.auth())
+  router.get('/callback/:platformName', [PlaylistsController, 'getAccessToken'])
+  router.group(() => {
+    router.get('/:platformName', [PlaylistsController, 'getPlaylists'])
+  }).prefix('playlist')
 }).prefix('/api/v1')
